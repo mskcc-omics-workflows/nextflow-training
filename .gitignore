@@ -1,0 +1,9 @@
+
+*.log
+*.log.*
+.nextflow/*
+cookie
+test_nucleo/*
+work/*
+.DS_Store
+results/*
