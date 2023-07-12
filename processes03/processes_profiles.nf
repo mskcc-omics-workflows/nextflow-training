@@ -60,7 +60,6 @@ workflow {
     Channel
     .fromFilePairs( params.reads, checkIfExists:true )
     .set { read_pairs_ch } 
-    read_pairs_ch.view()
 
     // Example 1: Quantification 
     quantification(index.out.index, read_pairs_ch)

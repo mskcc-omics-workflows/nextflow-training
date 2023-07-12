@@ -159,20 +159,37 @@ Notice how the output now identifies three runs of quantification. This features
 
 ### Running on LSF 
 
-We can also use config files to specify profiles for different computing environments.
+We can also use config files to specify profiles for different computing environments like the lsf. 
 
-For example try ssh'ing into juno:
+To do so, we first need to some setup.
+
+First ssh into juno:
 ```
 ssh -A -Y <user_name>@juno.mskcc.org
 ```
-and re-clone the repo:
+
+Re-clone the repo:
 ```
 git clone https://github.com/mskcc-omics-workflows/nextflow-training.git
-cd nextflow-training/
-```
-We can now run: 
 ```
 
+Load singularity and install nextflow 
+```
+module load singularity/3.7.1
+curl -s https://get.nextflow.io | bash
+./nextflow run hello
+```
+
+We can then run: 
+```
+cd nextflow-training
+nextflow processes03/processes_profiles.nf  -c processes03/alternative_profiles.config -profile lsf
+```
+Through using `alternative_profiles.config` alone, we were able to successfully submit our job to the cluster. This is because `alternative_profiles.config` specifies different computing profiles that set different configuration parameters. 
+
+This same script can be run in your local environment with: 
+```
+nextflow processes03/processes_profiles.nf  -c processes03/alternative_profiles.config -profile docker
 ```
 
 
@@ -208,7 +225,7 @@ These allow us to import nextflow processes for use in the workflow defined in `
 
 This script also shows off the power of Channel Operators. 
 
-This proves to be powerful example of the uses of nextflow. And from here we have enought to write a bioninformatics pipeline. However, there are still a few weaknesses. 
+This proves to be powerful example of the uses of nextflow. And from here we have enought to write a bioinformatics pipeline. However, there are still a few weaknesses. 
 
 For one, advanced.config is getting quite bloated. It is true we can specify multiple configs. However, it is not exactly clear what would be the best way to do this. In a similar note, it is also not clear how to best organize our modules and workflows. Or how testing should be handled in a formalized way? 
 
@@ -218,9 +235,11 @@ Of course, this is something anyone could be solved by an individual team applyi
 
 ## Modularizing Alignment via Nf-Core
 
+### Overview of Alignment as a Module
 
-- lucid chart of nf-core / explain our fork
-- pull into pipeline 
+- Alignment in mskcc-omics-workflows/modules: https://github.com/mskcc-omics-workflows/modules/blob/feature/alignment/subworkflows/nf-core/alignment/main.nf 
+
+### Adding a module
 To get started, we can install the nf-core python package with the following: 
 
 ```
@@ -229,6 +248,22 @@ pip install nf-core==2.7.1
 
 * Note please install 2.7.1 as this is what materials for this training have been made using. 2.9 is a recent release and I haven't vetted for compatibility.
 
+Then, clone the mskcc-omics-workflows/modules and start a feature branch 
+```
+git clone https://github.com/mskcc-omics-workflows/modules.git
+git checkout feature/<module_name>
+```
+
+Add a new module:
+```
+nf-core modules create <module_name>
+```
+Follow DSL2 module guidelines and Pull Request to develop. 
+
+- See mergefastq example from Yu Hu for the basics: https://github.com/mskcc-omics-workflows/modules/pull/63
+
+### Setting up a pipeline with mskcc-omics-workflows/modules
+
 Creating a pipeline: 
 ```
 git remote add origin https://github.com/mskcc-omics-workflows/pipeline_example.git
@@ -236,20 +271,16 @@ git branch -M main
 git push -u origin main
 ```
 
-Installing a module: 
+Installing a workflow: 
 
 ```
-nf-core modules install bwa_mem
-nf-core modules install picard_addorreplacereadgroups
-nf-core subworkflows --git-remote https://github.com/mskcc-omics-workflows/mskcc-modules.git --branch feature/extractumi install extractumi
+nf-core subworkflows --git-remote https://github.com/mskcc-omics-workflows/mskcc-modules.git --branch feature/alignment install alignment
 ```
 
+## Additional Info 
 Other topics of interest:
-- Singularity? 
-- Running on Cluster? 
 - Execution from online
 - How to contribute to mskcc-omics-workflows/modules 
 
 
-
-Pieces adapted from Sequera: https://github.com/seqeralabs 
+Pieces adapted from Sequera Labs Nextflow Training: https://github.com/seqeralabs 
