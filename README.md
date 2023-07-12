@@ -1,20 +1,23 @@
 # MSK Nextflow Training
 
-## Set-up
-helpful link: 
-https://www.nextflow.io/index.html
-
+## Setting up Nextflow
 ### Prerequisites
 
-- Docker:
-  If not installed you can install here: https://www.docker.com/
+Make sure you have all prerequisites installed on you local machine: 
+
+- Docker: 
+
+If not installed you can install here: https://www.docker.com/
 
 - Java: 
-```
-java -version
-```
 
-If you do no have Java installed you can install with: 
+You can check if Java is installed on your machine with the following: 
+```
+  java -version
+```
+You must have Java version 11 or greater. 
+
+If you do not have Java installed or an out-dated version, you can install it with: 
 
 ```
 sdk install java 17.0.6-amzn
@@ -26,10 +29,7 @@ curl -s https://get.nextflow.io | bash
 ./nextflow run hello
 ```
 
-There may be some permission issues. Please reachout to me if you experience these.
-
-resources: https://www.nextflow.io/ 
-
+There may be some permission issues. Please reach out to me if you experience these.
 
 ### Training Repo
 
