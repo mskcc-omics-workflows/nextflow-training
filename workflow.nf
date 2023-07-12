@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
  
 params.in = "$baseDir/data/transcriptome.fa"
- 
+params.outdir = "results/"
 /*
  * Split a fasta file into multiple files
  */
