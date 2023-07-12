@@ -41,7 +41,6 @@ process index {
  * the index and the matched read files
  */
 process quantification {
-     
     input:
     path index 
     tuple val(pair_id), path(reads) 
@@ -64,7 +63,7 @@ workflow {
     Channel
     .fromFilePairs( params.reads, checkIfExists:true )
     .set { read_pairs_ch } 
-    read_pairs_ch.view()
+    // read_pairs_ch.view()
 
     // Example 1: Quantification 
     quantification(index.out.index, read_pairs_ch)
